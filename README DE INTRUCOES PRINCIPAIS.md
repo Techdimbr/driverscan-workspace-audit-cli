@@ -3,7 +3,7 @@
 **Repositório Oficial:** `https://github.com/Techdimbr/driverscan-workspace-audit-cli`  
 **Classificação:** Projeto de Referência Técnica Corporativa (Padrão Open-Core)  
 **Doutrina de Engenharia:** Kether_1 · Central de Tecnologia TECHDIM  
-**Status Atual:** Estrutura Base Canônica Homologada — Aguardando Desenvolvimento da Função  
+**Status Atual:** Base Canônica Homologada — Pronto para Expansão de Funções  
 **Website Institucional:** https://techdimbr.github.io/techdimbr/  
 **Licença:** MIT Corporate  
 
@@ -13,59 +13,48 @@
 - **Nome Comercial:** DriverScan Workspace Audit CLI
 - **Identificador (Slug):** `driverscan-workspace-audit-cli`
 - **Categoria:** Auditoria & Governança Google Workspace
-- **Stack Tecnológica:** Python 3 puro (stdlib), Google Drive API v3, SQLite
-- **Objetivo Central:** Ferramenta CLI de alta performance para auditoria e governança de permissões no Google Drive corporativo. Mapeia links públicos órfãos, acessos externos não autorizados e gera matriz de risco em SQLite e Markdown.
+- **Stack Tecnológica:** Python 3 (stdlib puro), Google Drive API v3, SQLite3, JSON
+- **Objetivo Central:** Fornecer uma ferramenta CLI ultrarrápida e determinística para inventariar arquivos e permissões de domínios corporativos Google Workspace, classificando riscos de compartilhamento público e exfiltração de dados.
 
-### Principais Casos de Uso Previstos
-- Varredura em lote de permissões de arquivos e pastas corporativas compartilhadas com o público
-- Identificação de dados sensíveis expostos por links abertos ou ex-colaboradores
-- Geração de relatórios executivos de risco para compliance e auditorias de segurança
-
----
-
-## 2. Estrutura Operacional Canônica
-Este repositório foi construído sobre a arquitetura canônica **PRJ-TECHDIM-PUBLIC-v1.0.0**:
-- `00_AUDITORIA/`: Verificação criptográfica de integridade SHA-256 (`./00_AUDITORIA/verificar_integridade.sh`).
-- `01_SOBRE_O_PROJETO/`: Documentação de requisitos, casos de uso e roadmap de desenvolvimento.
-- `02_COMO_USAR/`: Procedimentos operacionais padrão (SOP), pré-requisitos e configurações.
-- `03_APLICACAO/`: Núcleo de código (`src/`) e suite de testes automatizados (`tests/`).
-- `04_INTELIGENCIA_DE_DESENVOLVIMENTO/`: Decisões de arquitetura (ADRs) e regras de contexto para agentes de IA.
-- `05_VERSOES/`: Controle semântico de versões (`CHANGELOG.md`).
-- `06_MIDIA/`: Material de apresentação executiva e ficha técnica.
+### Casos de Uso Reais
+1. **Auditoria Pré-M&A e Due Diligence:** Avaliação do estado de vazamento de dados de uma empresa antes de aquisição.
+2. **Governança Pós-Desligamento:** Identificação de pastas corporativas com acessos concedidos a e-mails pessoais de ex-colaboradores.
+3. **Varredura Preventiva de Links Abertos:** Relatório de arquivos compartilhados com a opção `Qualquer pessoa com o link pode visualizar/editar`.
 
 ---
 
-## 3. Instruções Iniciais para Início do Desenvolvimento
-Quando for iniciar o desenvolvimento da função específica:
-1. **Ativação e Validação Inicial:**
+## 2. Estrutura dos Módulos em `03_APLICACAO/src/`
+
+```text
+03_APLICACAO/src/
+├── scanner.py                         # Motor principal de varredura e cálculo de risco
+├── database.py                        # Camada de persistência SQLite3 com índices de pesquisa
+├── reporter.py                        # Gerador de relatórios executivos em Markdown e JSON
+└── credentials_helper.py              # Leitor seguro de credenciais Service Account / OAuth
+```
+
+---
+
+## 3. Guia Operacional para o Desenvolvedor
+
+1. **Bootstrap do Ambiente:**
    ```bash
    ./iniciar.sh
    ```
-   *O bootstrap verificará o ambiente Debian/Linux, dependências e ativará os pre-commit hooks de proteção Zero Leaks.*
-
-2. **Implementação do Core:**
-   - Codifique a lógica da solução dentro do diretório `03_APLICACAO/src/`.
-   - Mantenha o código modular, desacoplado e documentado.
-
-3. **Criação e Execução de Testes:**
-   - Escreva testes unitários e de integração em `03_APLICACAO/tests/`.
-   - Valide a execução com:
-     ```bash
-     python3 -m unittest discover 03_APLICACAO/tests
-     ```
-
-4. **Auditoria de Integridade Criptográfica:**
-   - Antes de efetuar novos commits de versão, atualize o manifesto SHA-256 executando:
-     ```bash
-     ./00_AUDITORIA/verificar_integridade.sh --gerar
-     ```
+2. **Executar Testes Unitários:**
+   ```bash
+   python3 -m unittest discover 03_APLICACAO/tests
+   ```
+3. **Auditar Integridade Criptográfica dos Arquivos:**
+   ```bash
+   ./00_AUDITORIA/verificar_integridade.sh --gerar
+   ```
 
 ---
 
-## 4. Diretrizes e Regras de Negócio a Preencher
-<!-- PREENCHA ESTA SEÇÃO COM AS DIRETRIZES ESPECÍFICAS DA FUNÇÃO QUANDO FOR INICIAR O DESENVOLVIMENTO -->
-> **[ESPAÇO RESERVADO PARA DETALHAMENTO DA FUNÇÃO]**
-> - Inserir aqui os casos de uso detalhados;
-> - Inserir aqui parâmetros de entrada, saída e esquemas de dados;
-> - Inserir requisitos específicos de bibliotecas e integração de APIs externas;
-> - Inserir regras de segurança específicas para o ambiente de execução.
+## 4. Diretrizes e Regras de Negócio da Função (Para Preenchimento)
+<!-- ÁREA DESTINADA À ESPECIFICAÇÃO DE NOVOS RECURSOS DE VARREDURA -->
+- [x] Motor de pontuação de severidade de permissões (`ALTO`, `MEDIO`, `BAIXO`);
+- [x] Armazenamento de resultados em tabela SQLite normalizada;
+- [ ] Integração com suporte a delegação de autoridade em todo o domínio (Domain-Wide Delegation);
+- [ ] Módulo de revogação automática opcional (`--revoke-public-links`) com confirmação interativa.
